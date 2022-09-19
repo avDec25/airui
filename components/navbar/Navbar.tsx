@@ -1,31 +1,50 @@
 import * as React from 'react';
-import { ButtonGroup, Button, Box } from '@mui/material';
+import { useState } from 'react';
+import { Button, Menu, Icon } from 'semantic-ui-react'
 import { useRouter } from 'next/router'
 import { UrlObject } from 'url';
 import { useSession, signIn, signOut } from "next-auth/react"
-import styles from '../../styles/Navbar.module.css';
+
 
 export default function Navbar () {
-  const { data: session } = useSession()  
+  const [activePage, setActivePage] = useState('home')
+  const {data: session} = useSession()
   const router = useRouter();
-  const gotoPage = (href: string | UrlObject) => {
+  const gotoPage = (href: string | UrlObject, activate: string) => {
+    setActivePage(activate)
     router.push(href);
   }
+  
 
   return (
-    <div className={styles.nav}>
-      <div>
-        <Button onClick={() => gotoPage("/")}> Home </Button>
-        <Button onClick={() => gotoPage("/info/clusters")}> Cluster </Button>
-        <Button onClick={() => gotoPage("/info/kyc")}> Kyc </Button>
-      </div>
-      <ButtonGroup variant="outlined" aria-label="sign in out group">
-        {session ? (
-          <Button onClick={() => signOut()}> Sign Out </Button>
-        ) : (
-          <Button onClick={() => signIn("google")}> Sign In </Button>
-        )}
-      </ButtonGroup>
-    </div>
+      <Menu size='mini'>
+          <Menu.Item
+            name='Home'
+            active={activePage === 'home'}
+            onClick={() => gotoPage("/", 'home')}
+          >
+            <Icon name='home' />
+            Home
+          </Menu.Item>
+
+          <Menu.Item
+            name='Clusters'
+            active={activePage === 'clusters'}
+            onClick={() => gotoPage("/info/clusters", 'clusters')}
+          >
+            <Icon name='server' />
+            Clusters
+          </Menu.Item>
+
+          <Menu.Menu position='right'>
+            <Menu.Item>
+            {session ? (
+                <Button icon='sign-out' labelPosition='right' content='Sign Out' onClick={() => signOut()}/>
+              ) : (
+                <Button icon='sign-in' labelPosition='left' content='Sign In' onClick={() => signIn("google")} />
+              )}
+            </Menu.Item>
+          </Menu.Menu>
+        </Menu>
   );
 }
