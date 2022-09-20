@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState } from "react";
-import { Container, Form, Grid } from 'semantic-ui-react'
+import { Container, Form, Grid, Table, Dimmer, Loader } from 'semantic-ui-react'
 import { toast } from "react-toastify";
 import { useSession } from "next-auth/react";
 import { useQuery, useQueryClient } from 'react-query';
@@ -16,8 +16,13 @@ function allAppNames() {
   return axios.get(`${backend_service}/kyc/app-names`)
 }
 
+function getCurrentDetails(appName: string, eventName: string) {
+  return axios.get(`${backend_service}/kyc/producer?appName=${appName}&eventName=${eventName}`)
+}
+
 let selectedApp = '';
 let selectedEvent = '';
+
 
 export function UpdateDetails() {
   const session = useSession();
@@ -25,6 +30,7 @@ export function UpdateDetails() {
 
   const appResult = useQuery('app-names', allAppNames);
   let eventResult = useQuery('event-names', () => producingEventsNames(selectedApp));
+  const { data: currentDetails } = useQuery('current-details', () => getCurrentDetails(selectedApp, selectedEvent));
 
   const userEmail = session.data?.user?.email;
   const [formData, setFormData] = useState({
@@ -34,7 +40,7 @@ export function UpdateDetails() {
     "bauLoad": "",
     "team": "",
     "managerEmail": "",
-    "updaterEmail": userEmail,
+    "lastUpdatedBy": userEmail,
   });
   const optionalFields = ["brdLoad", "bauLoad"];
 
@@ -52,24 +58,29 @@ export function UpdateDetails() {
   const optionsApp = appResult.data?.data.appNames.map((item: string) => { return { key: item, text: item, value: item } })
   let optionsEvent = eventResult.data?.data.events.map((item: string) => { return { key: item, text: item, value: item } })
   const optionsSDKs = [
-    {key: "java", text: "Java", value: "java"},
-    {key: "go", text: "Go", value: "go"},
-    {key: "python", text: "Python", value: "python"},
-    {key: "node", text: "Node", value: "node"},
+    { key: "java", text: "Java", value: "java" },
+    { key: "go", text: "Go", value: "go" },
+    { key: "python", text: "Python", value: "python" },
+    { key: "node", text: "Node", value: "node" },
   ]
 
   const handleApplicationSelection = (event: object, item: any) => {
     selectedApp = item.value;
     queryClient.invalidateQueries('event-names');
     selectedEvent = '';
+    handleFormChange(event, item);
   }
-
+  
   const handleEventSelection = (event: object, item: any) => {
     selectedEvent = item.value;
-    console.log(selectedApp);
-    console.log(selectedEvent);
+    queryClient.invalidateQueries('current-details');
+    handleFormChange(event, item);
   }
 
+  const handleFormChange = (event: object, item: {[key: string]: any}) => {
+    formData[item.id] = item.value
+    setFormData(formData)
+  }
 
 
   const validateAndSubmitRequest = (e: object, item: any) => {
@@ -95,6 +106,7 @@ export function UpdateDetails() {
       });
     } else {
       console.log('submitted form')
+      console.log(formData);
     }
   }
 
@@ -108,6 +120,7 @@ export function UpdateDetails() {
                 <Form.Group widths='equal'>
                   <Form.Select
                     fluid
+                    id='appName'
                     label='Producer Application'
                     options={optionsApp}
                     onChange={handleApplicationSelection}
@@ -115,6 +128,7 @@ export function UpdateDetails() {
 
                   <Form.Select
                     fluid
+                    id='eventName'
                     label='Producing Event Name'
                     options={optionsEvent}
                     onChange={handleEventSelection}
@@ -122,27 +136,91 @@ export function UpdateDetails() {
                 </Form.Group>
 
                 <Form.Group widths={'equal'}>
-                  <Form.Input fluid label='BRD Load' placeholder='in KBps' />
-                  <Form.Input fluid label='BAU Load' placeholder='in KBps' />
+                  <Form.Input id='brdLoad' fluid label='BRD Load' placeholder='in KBps' onChange={handleFormChange} />
+                  <Form.Input id='bauLoad' fluid label='BAU Load' placeholder='in KBps' onChange={handleFormChange} />
                 </Form.Group>
                 <Form.Group widths={'equal'}>
-                <Form.Select
+                  <Form.Select
                     fluid
+                    id='sdkLang'
                     label='Airbus SDK'
                     options={optionsSDKs}
+                    onChange={handleFormChange}
                   />
-                  <Form.Input fluid label='SDK version' />
+                  <Form.Input fluid id='sdkVersion' label='SDK version' onChange={handleFormChange} />
                 </Form.Group>
                 <Form.Group widths={'equal'}>
-                  <Form.Input required fluid type='email' label='Manager Email' placeholder='email only is accepted' />
-                  <Form.Input fluid label='Team Name or Team Email' />
-                  <Form.Input fluid label='Updater' value={userEmail} />
+                  <Form.Input required fluid id='managerEmail' type='email' label='Manager Email' onChange={handleFormChange}/>
+                  <Form.Input fluid id='team' label='Team Name' placeholder='Enter team email if available' onChange={handleFormChange} />
+                  <Form.Input fluid id='lastUpdatedBy' label='Updater' value={userEmail} onChange={handleFormChange} />
                 </Form.Group>
 
-                <Form.Button>Submit</Form.Button>
+                <Form.Button onClick={validateAndSubmitRequest}>Save</Form.Button>
               </Form>
             </Container>
           </Grid.Column>
+
+
+          {!!selectedEvent &&
+            <Grid.Column width={4}>
+              <Container>
+                <Table>
+                  <Table.Header>
+                    <Table.Row>
+                      <Table.HeaderCell colSpan='2'>Current Details</Table.HeaderCell>
+                    </Table.Row>
+                  </Table.Header>
+
+                  <Table.Body>
+                    <Table.Row>
+                      <Table.Cell>Producer Application</Table.Cell>
+                      <Table.Cell> {selectedApp} </Table.Cell>
+                    </Table.Row>
+
+                    <Table.Row>
+                      <Table.Cell>Producer Event Name</Table.Cell>
+                      <Table.Cell> {selectedEvent} </Table.Cell>
+                    </Table.Row>
+
+                    <Table.Row>
+                      <Table.Cell>BRD Load</Table.Cell>
+                      <Table.Cell> {currentDetails?.data.bauLoad} </Table.Cell>
+                    </Table.Row>
+
+                    <Table.Row>
+                      <Table.Cell>BAU Load</Table.Cell>
+                      <Table.Cell> {currentDetails?.data.brdLoad} </Table.Cell>
+                    </Table.Row>
+
+                    <Table.Row>
+                      <Table.Cell>Airbus SDK</Table.Cell>
+                      <Table.Cell> {currentDetails?.data.sdkLang} </Table.Cell>
+                    </Table.Row>
+
+                    <Table.Row>
+                      <Table.Cell>SDK Version</Table.Cell>
+                      <Table.Cell> {currentDetails?.data.sdkVersion} </Table.Cell>
+                    </Table.Row>
+
+                    <Table.Row>
+                      <Table.Cell>Manager Email</Table.Cell>
+                      <Table.Cell> {currentDetails?.data.managerEmail} </Table.Cell>
+                    </Table.Row>
+
+                    <Table.Row>
+                      <Table.Cell>Team</Table.Cell>
+                      <Table.Cell> {currentDetails?.data.team} </Table.Cell>
+                    </Table.Row>
+
+                    <Table.Row>
+                      <Table.Cell>Last Updated By</Table.Cell>
+                      <Table.Cell> {currentDetails?.data.lastUpdatedBy} </Table.Cell>
+                    </Table.Row>
+                  </Table.Body>
+
+                </Table>
+              </Container>
+            </Grid.Column>}
         </Grid.Row>
       </Grid>
     </>
