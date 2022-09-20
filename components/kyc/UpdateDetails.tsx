@@ -1,9 +1,9 @@
 import React from 'react'
 import { useState } from "react";
-import { Container, Form, Grid, Table, Dimmer, Loader } from 'semantic-ui-react'
+import { Container, Form, Grid, Table } from 'semantic-ui-react'
 import { toast } from "react-toastify";
 import { useSession } from "next-auth/react";
-import { useQuery, useQueryClient } from 'react-query';
+import { useQuery, useQueryClient, useMutation } from 'react-query';
 import axios from 'axios';
 
 const backend_service = process.env.NEXT_PUBLIC_AIRBUS_SERVICE_SUPPORT
@@ -18,6 +18,28 @@ function allAppNames() {
 
 function getCurrentDetails(appName: string, eventName: string) {
   return axios.get(`${backend_service}/kyc/producer?appName=${appName}&eventName=${eventName}`)
+}
+
+const saveKycUpdate = (formData: object) => {  
+  const promise = axios.post(`${backend_service}/kyc/producer`, formData)
+  toast.promise(
+    promise,
+    {
+      pending: 'Saving KYC Details',
+      success: {
+        render({data}) {
+          return data?.data.message
+        }
+      },
+      error: {
+        render({data}) {
+          console.log(data);
+          return data?.response.data.message
+        }
+      }
+    }
+  );
+  return promise
 }
 
 let selectedApp = '';
@@ -38,11 +60,19 @@ export function UpdateDetails() {
     "eventName": "",
     "brdLoad": "",
     "bauLoad": "",
+    "sdkLang": "",
+    "sdkVersion": "",
     "team": "",
     "managerEmail": "",
     "lastUpdatedBy": userEmail,
   });
   const optionalFields = ["brdLoad", "bauLoad"];
+
+  const mutation = useMutation(saveKycUpdate, {
+    onSuccess: (data, variables, context) => {
+      queryClient.invalidateQueries('current-details')
+    },
+  });
 
   if (session.status != "authenticated") {
     return (
@@ -70,20 +100,22 @@ export function UpdateDetails() {
     selectedEvent = '';
     handleFormChange(event, item);
   }
-  
+
   const handleEventSelection = (event: object, item: any) => {
     selectedEvent = item.value;
     queryClient.invalidateQueries('current-details');
     handleFormChange(event, item);
   }
 
-  const handleFormChange = (event: object, item: {[key: string]: any}) => {
+  const handleFormChange = (event: object, item: { [key: string]: any }) => {
     formData[item.id] = item.value
     setFormData(formData)
   }
 
 
-  const validateAndSubmitRequest = (e: object, item: any) => {
+
+  const validateAndSubmitRequest = (e: any, item: any) => {
+    e.preventDefault();
     var hasError = false;
     var message = "";
     for (const [key, value] of Object.entries(formData)) {
@@ -96,7 +128,7 @@ export function UpdateDetails() {
     }
     if (hasError) {
       toast.error(`Found Empty field; ${message}`, {
-        position: "top-right",
+        position: "bottom-left",
         autoClose: false,
         hideProgressBar: false,
         closeOnClick: true,
@@ -105,8 +137,7 @@ export function UpdateDetails() {
         progress: undefined,
       });
     } else {
-      console.log('submitted form')
-      console.log(formData);
+      mutation.mutate(formData);
     }
   }
 
@@ -150,7 +181,7 @@ export function UpdateDetails() {
                   <Form.Input fluid id='sdkVersion' label='SDK version' onChange={handleFormChange} />
                 </Form.Group>
                 <Form.Group widths={'equal'}>
-                  <Form.Input required fluid id='managerEmail' type='email' label='Manager Email' onChange={handleFormChange}/>
+                  <Form.Input required fluid id='managerEmail' type='email' label='Manager Email' onChange={handleFormChange} />
                   <Form.Input fluid id='team' label='Team Name' placeholder='Enter team email if available' onChange={handleFormChange} />
                   <Form.Input fluid id='lastUpdatedBy' label='Updater' value={userEmail} onChange={handleFormChange} />
                 </Form.Group>
@@ -162,7 +193,7 @@ export function UpdateDetails() {
 
 
           {!!selectedEvent &&
-            <Grid.Column width={4}>
+            <Grid.Column width={5}>
               <Container>
                 <Table>
                   <Table.Header>
@@ -184,12 +215,12 @@ export function UpdateDetails() {
 
                     <Table.Row>
                       <Table.Cell>BRD Load</Table.Cell>
-                      <Table.Cell> {currentDetails?.data.bauLoad} </Table.Cell>
+                      <Table.Cell> {currentDetails?.data.brdLoad} </Table.Cell>
                     </Table.Row>
 
                     <Table.Row>
                       <Table.Cell>BAU Load</Table.Cell>
-                      <Table.Cell> {currentDetails?.data.brdLoad} </Table.Cell>
+                      <Table.Cell> {currentDetails?.data.bauLoad} </Table.Cell>
                     </Table.Row>
 
                     <Table.Row>
