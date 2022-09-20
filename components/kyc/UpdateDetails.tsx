@@ -66,7 +66,6 @@ export function UpdateDetails() {
     "managerEmail": "",
     "lastUpdatedBy": userEmail,
   });
-  const optionalFields = ["brdLoad", "bauLoad"];
 
   const mutation = useMutation(saveKycUpdate, {
     onSuccess: (data, variables, context) => {
@@ -113,17 +112,13 @@ export function UpdateDetails() {
   }
 
 
-
-  const validateAndSubmitRequest = (e: any, item: any) => {
-    e.preventDefault();
+  const validateAndSubmitRequest = (e: object, item: any) => {    
     var hasError = false;
     var message = "";
     for (const [key, value] of Object.entries(formData)) {
-      if (!optionalFields.includes(key)) {
-        if (!value) {
-          hasError = true
-          message = `Please fill ${key} before continuing`
-        }
+      if (!value) {
+        hasError = true
+        message = `Please fill ${key} before continuing`
       }
     }
     if (hasError) {
@@ -181,12 +176,12 @@ export function UpdateDetails() {
                   <Form.Input fluid id='sdkVersion' label='SDK version' onChange={handleFormChange} />
                 </Form.Group>
                 <Form.Group widths={'equal'}>
-                  <Form.Input required fluid id='managerEmail' type='email' label='Manager Email' onChange={handleFormChange} />
+                  <Form.Input required fluid type='email' id='managerEmail' label='Manager Email' onChange={handleFormChange} />
                   <Form.Input fluid id='team' label='Team Name' placeholder='Enter team email if available' onChange={handleFormChange} />
                   <Form.Input fluid id='lastUpdatedBy' label='Updater' value={userEmail} onChange={handleFormChange} />
                 </Form.Group>
 
-                <Form.Button onClick={validateAndSubmitRequest}>Save</Form.Button>
+                <Form.Button type='submit' onClick={validateAndSubmitRequest}>Submit</Form.Button>
               </Form>
             </Container>
           </Grid.Column>

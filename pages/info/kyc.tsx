@@ -3,7 +3,7 @@ import Head from 'next/head';
 import { useSession } from "next-auth/react";
 import { Tab, Grid } from "semantic-ui-react";
 import { UpdateDetails } from "../../components/kyc/UpdateDetails";
-import { ViewDetails } from "../../components/kyc/ViewDetails";
+import { KycProgress } from "../../components/kyc/KycProgress";
 
 const Kyc: NextPage = () => {
   const session = useSession();
@@ -32,15 +32,15 @@ const Kyc: NextPage = () => {
     },
     {
       menuItem: {
-        key: "ViewDetails",
-        content: "View Details",
+        key: "KycProgress",
+        content: "Kyc Progress",
       },
       render: () => (
         <Tab.Pane attached={false}>
           <Grid>
             <Grid.Row>
               <Grid.Column>
-                <ViewDetails />
+                <KycProgress />
               </Grid.Column>
             </Grid.Row>
           </Grid>
