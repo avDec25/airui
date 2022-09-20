@@ -11,7 +11,9 @@ function getAllKycDetails() {
 }
 
 export function KycProgress() {
-  const kycDetails = useQuery('all-kyc-details', getAllKycDetails);
+  const kycDetails = useQuery('all-kyc-details', getAllKycDetails, {
+    refetchInterval: 10000
+  });
   if (kycDetails.isLoading) {
     return (<>Loading Data...</>);
   }
