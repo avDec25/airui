@@ -19,12 +19,12 @@ export default function Navbar () {
   return (
       <Menu size='mini'>
           <Menu.Item
-            name='Home'
+            name='home'
             active={activePage === 'home'}
             onClick={() => gotoPage("/", 'home')}
           >
             <Icon name='home' />
-            Home
+            Airbus UI
           </Menu.Item>
 
           <Menu.Item
@@ -34,6 +34,15 @@ export default function Navbar () {
           >
             <Icon name='server' />
             Clusters
+          </Menu.Item>
+
+          <Menu.Item
+            name='KYC'
+            active={activePage === 'kyc'}
+            onClick={() => gotoPage("/info/kyc", 'kyc')}
+          >
+            <Icon name='address card' />
+            KYC
           </Menu.Item>
 
           <Menu.Menu position='right'>
