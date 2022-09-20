@@ -12,10 +12,6 @@ const Kyc: NextPage = () => {
     return (<div>Cannot continue for an arbitrary client, please sign in first</div>)
   }
 
-  function callTheAPI() {
-    console.log("hello from the API and get results");
-  }
-
   const panes = [
     {
       menuItem: {
