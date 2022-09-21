@@ -42,7 +42,7 @@ export default function Navbar() {
         active={router.pathname.includes('register')}
         onClick={() => { router.push('/register/SimpleRegister') }}
       >
-        <Icon name='address card' />
+        <Icon name='signup' />
         Register
       </Menu.Item>
 
