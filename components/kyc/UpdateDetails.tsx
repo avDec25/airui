@@ -82,7 +82,7 @@ export function UpdateDetails() {
 
 
   if (appResult.isLoading || eventResult.isLoading) {
-    return <>is Loading....</>
+    return <>Loading Data...</>
   }
   const optionsApp = appResult.data?.data.appNames.map((item: string) => { return { key: item, text: item, value: item } })
   let optionsEvent = eventResult.data?.data.events.map((item: string) => { return { key: item, text: item, value: item } })

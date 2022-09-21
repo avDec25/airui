@@ -16,7 +16,7 @@ function getClusterDetails() {
 const Clusters: NextPage = () => {
   const clusterDetails = useQuery('clsuter-details', getClusterDetails);
   if (clusterDetails.isLoading) {
-    return (<>Loading Data...</>);
+    return <>Loading Data...</>
   }
   const clusterData = clusterDetails?.data?.data.details
 
