@@ -1,13 +1,10 @@
-import * as React from 'react';
-import { useState, useEffect } from 'react';
+import React from 'react';
 import { Button, Menu, Icon } from 'semantic-ui-react'
 import { useRouter } from 'next/router'
-import { UrlObject } from 'url';
 import { useSession, signIn, signOut } from "next-auth/react"
 
 
 export default function Navbar () {
-  const [activePage, setActivePage] = useState('home')
   const {data: session} = useSession()
   const router = useRouter();
 
@@ -15,8 +12,8 @@ export default function Navbar () {
       <Menu >
           <Menu.Item
             name='home'
-            active={activePage === 'home'}
-            onClick={() => {router.push('/'); setActivePage('home')}}
+            active={router.pathname.includes('home')}
+            onClick={() => {router.push('/')}}
           >
             <Icon name='home' />
             Airbus UI
@@ -24,8 +21,8 @@ export default function Navbar () {
 
           <Menu.Item
             name='Clusters'
-            active={activePage === 'clusters'}
-            onClick={() => {router.push('/info/clusters'); setActivePage('clusters')}}
+            active={router.pathname.includes('clusters')}
+            onClick={() => {router.push('/info/clusters')}}
           >
             <Icon name='server' />
             Clusters
@@ -33,8 +30,8 @@ export default function Navbar () {
 
           <Menu.Item
             name='KYC'
-            active={activePage === 'kyc'}
-            onClick={() => {router.push('/info/kyc'); setActivePage('kyc')}}
+            active={router.pathname.includes('kyc')}
+            onClick={() => {router.push('/info/kyc')}}
           >
             <Icon name='address card' />
             KYC

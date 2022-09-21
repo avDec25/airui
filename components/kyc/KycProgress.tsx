@@ -1,5 +1,5 @@
 import React from 'react'
-import { Grid, Progress, Table, Card, Container, TableBody, TableCell } from 'semantic-ui-react';
+import { Grid, Progress, Table } from 'semantic-ui-react';
 import { useQuery } from 'react-query';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import axios from 'axios';
@@ -17,12 +17,12 @@ export function KycProgress() {
   if (kycDetails.isLoading) {
     return (<>Loading Data...</>);
   }
-  const kycData = kycDetails.data.data
+  const kycData = kycDetails?.data?.data
 
   return (
     <Grid>
-      <Grid.Row>
-        <Grid.Column width={8}>
+      <Grid.Row columns={2}>
+        <Grid.Column>
           <Table celled>
             <Table.Header>
               <Table.Row>
@@ -31,7 +31,6 @@ export function KycProgress() {
                 <Table.HeaderCell>Kyc Record</Table.HeaderCell>
               </Table.Row>
             </Table.Header>
-
             <Table.Body>
               {kycData.details.map(item => {
                 let jsonKyc = 'No KYC';
@@ -54,11 +53,8 @@ export function KycProgress() {
             </Table.Body>
           </Table>
         </Grid.Column>
-        <Grid.Column width={4}>
-          <Container>
-            <Progress active total={kycData.completed + kycData.pending} progress precision={1} color='green' value={kycData.completed} />
-          </Container>
 
+        <Grid.Column width={4}>
           <Table definition>
             <Table.Body>
               <Table.Row>
@@ -71,7 +67,7 @@ export function KycProgress() {
               </Table.Row>
             </Table.Body>
           </Table>
-
+          <Progress active total={kycData.completed + kycData.pending} progress precision={1} color='green' value={kycData.completed} />
         </Grid.Column>
       </Grid.Row>
     </Grid>
