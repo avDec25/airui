@@ -24,7 +24,7 @@ const Secured: NextPage = () => {
         <Tab.Pane attached={false}>
           <Grid>
             <Grid.Row>
-              <Grid.Column width={8}>
+              <Grid.Column width={10}>
                 <OnBoardApplication />
               </Grid.Column>
             </Grid.Row>
@@ -42,7 +42,7 @@ const Secured: NextPage = () => {
         <Tab.Pane attached={false}>
           <Grid>
             <Grid.Row>
-              <Grid.Column width={8}>
+              <Grid.Column width={10}>
                 <SecureTopic />
               </Grid.Column>
             </Grid.Row>
@@ -60,7 +60,7 @@ const Secured: NextPage = () => {
         <Tab.Pane attached={false}>
           <Grid>
             <Grid.Row>
-              <Grid.Column width={8}>
+              <Grid.Column width={10}>
                 <AuthorizeApp />
               </Grid.Column>
             </Grid.Row>
