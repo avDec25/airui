@@ -1,5 +1,5 @@
 import React from 'react'
-import { Grid, Table, Label } from 'semantic-ui-react';
+import { Grid, Table, Label, Button } from 'semantic-ui-react';
 import { useQuery } from 'react-query';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import axios from 'axios';
@@ -33,12 +33,14 @@ const Clusters: NextPage = () => {
           <Grid.Column>
             <Table>
               <Table.Header>
-                <Table.HeaderCell collapsing>Status</Table.HeaderCell>
-                <Table.HeaderCell collapsing>Cluster Name</Table.HeaderCell>
-                <Table.HeaderCell collapsing>Cluster Id</Table.HeaderCell>
-                <Table.HeaderCell collapsing>Brokers</Table.HeaderCell>
-                <Table.HeaderCell collapsing>ZooKeepers</Table.HeaderCell>
-                <Table.HeaderCell>Operations</Table.HeaderCell>
+                <Table.Row>
+                  <Table.HeaderCell collapsing>Status</Table.HeaderCell>
+                  <Table.HeaderCell collapsing>Cluster Name</Table.HeaderCell>
+                  <Table.HeaderCell collapsing>Cluster Id</Table.HeaderCell>
+                  <Table.HeaderCell collapsing>Brokers</Table.HeaderCell>
+                  <Table.HeaderCell collapsing>ZooKeepers</Table.HeaderCell>
+                  <Table.HeaderCell>Operations</Table.HeaderCell>
+                </Table.Row>
               </Table.Header>
               <Table.Body>
                 {
@@ -72,7 +74,12 @@ const Clusters: NextPage = () => {
                             {jsonZKs}
                           </SyntaxHighlighter>
                         </Table.Cell>
-                        <Table.Cell></Table.Cell>
+                        <Table.Cell textAlign="center">
+                          {item.isActive
+                            ? <Button basic color='red'>Disable</Button>
+                            : <Button basic color='green'>Enable</Button>
+                          }
+                        </Table.Cell>
                       </Table.Row>
                     );
                   })

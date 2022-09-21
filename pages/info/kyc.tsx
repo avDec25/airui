@@ -51,6 +51,11 @@ const Kyc: NextPage = () => {
 
   return (
     <>
+      <Head>
+        <title>KYC</title>
+        <meta name="description" content="Producer KYC" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
       <Tab menu={{ pointing: false }} panes={panes} />
     </>
   )
