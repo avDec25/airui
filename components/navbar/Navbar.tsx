@@ -46,6 +46,15 @@ export default function Navbar() {
         Register
       </Menu.Item>
 
+      <Menu.Item
+        name='Secured'
+        active={router.pathname.includes('secured')}
+        onClick={() => { router.push('/secured/Secured') }}
+      >
+        <Icon name='shield' />
+        Secured
+      </Menu.Item>
+
       <Menu.Menu position='right'>
         <Menu.Item>
           {session ? (
