@@ -20,19 +20,19 @@ function getCurrentDetails(appName: string, eventName: string) {
   return axios.get(`${backend_service}/kyc/producer?appName=${appName}&eventName=${eventName}`)
 }
 
-const saveKycUpdate = (formData: object) => {  
+const saveKycUpdate = (formData: { [key: string]: string }) => {
   const promise = axios.post(`${backend_service}/kyc/producer`, formData)
   toast.promise(
     promise,
     {
       pending: 'Saving KYC Details',
       success: {
-        render({data}) {
+        render({ data }) {
           return data?.data.message
         }
       },
       error: {
-        render({data}) {
+        render({ data }) {
           console.log(data);
           return data?.response.data.message
         }
@@ -112,7 +112,7 @@ export function UpdateDetails() {
   }
 
 
-  const validateAndSubmitRequest = (e: object, item: any) => {    
+  const validateAndSubmitRequest = (e: object, item: any) => {
     var hasError = false;
     var message = "";
     for (const [key, value] of Object.entries(formData)) {

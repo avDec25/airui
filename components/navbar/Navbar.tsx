@@ -37,6 +37,15 @@ export default function Navbar() {
         KYC
       </Menu.Item>
 
+      <Menu.Item
+        name='Register'
+        active={router.pathname.includes('register')}
+        onClick={() => { router.push('/register/SimpleRegister') }}
+      >
+        <Icon name='address card' />
+        Register
+      </Menu.Item>
+
       <Menu.Menu position='right'>
         <Menu.Item>
           {session ? (
