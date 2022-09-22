@@ -2,9 +2,9 @@ import type { NextPage } from 'next';
 import Head from 'next/head';
 import { useSession } from "next-auth/react";
 import { Tab, Grid } from "semantic-ui-react";
-import { UserRequestFetcher } from "../../components/requests-details/UserRequestFetcher";
+import { UserRequestFetcher } from "../../components/request-details/UserRequestFetcher";
 
-const RequestsDetails: NextPage = () => {
+const RequestDetails: NextPage = () => {
   const session = useSession();
 
   if (session.status != "authenticated") {
@@ -14,8 +14,8 @@ const RequestsDetails: NextPage = () => {
   const panes = [
     {
       menuItem: {
-        key: "UserRequestFetcher",
-        content: "User's Request Fetcher",
+        key: "UsersRequest",
+        content: "User's Request",
       },
       render: () => (
         <Tab.Pane attached={false}>
@@ -34,8 +34,8 @@ const RequestsDetails: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Requests Details</title>
-        <meta name="description" content="User Requests Details" />
+        <title>Request Details</title>
+        <meta name="description" content="Panel to Request Details on different items, like user request, producer, consumers" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Tab menu={{ pointing: false }} panes={panes} />
@@ -44,4 +44,4 @@ const RequestsDetails: NextPage = () => {
 
 }
 
-export default RequestsDetails
+export default RequestDetails

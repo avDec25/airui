@@ -64,12 +64,12 @@ export default function Navbar() {
       </Menu.Item>
 
       <Menu.Item
-        name='RequestsDetails'
-        active={router.pathname.includes('info/RequestsDetails')}
-        onClick={() => { router.push('/info/RequestsDetails') }}
+        name='RequestDetails'
+        active={router.pathname.includes('info/RequestDetails')}
+        onClick={() => { router.push('/info/RequestDetails') }}
       >
         <Icon name='tasks' />
-        Requests Details
+        Request Details
       </Menu.Item>
 
       <Menu.Menu position='right'>
