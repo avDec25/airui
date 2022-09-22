@@ -2,6 +2,7 @@ import React from 'react'
 import { Grid, Progress, Table } from 'semantic-ui-react';
 import { useQuery } from 'react-query';
 import SyntaxHighlighter from 'react-syntax-highlighter';
+import { docco } from "react-syntax-highlighter/dist/esm/styles/hljs";
 import axios from 'axios';
 
 const backend_service = process.env.NEXT_PUBLIC_AIRBUS_SERVICE_SUPPORT
@@ -43,7 +44,7 @@ export function KycProgress() {
                     <Table.Cell>{item.appName}</Table.Cell>
                     <Table.Cell>{item.eventName}</Table.Cell>
                     <Table.Cell width={4}>
-                      <SyntaxHighlighter language={"JSON"}>
+                      <SyntaxHighlighter language={"JSON"} style={docco}>
                         {jsonKyc}
                       </SyntaxHighlighter>
                     </Table.Cell>

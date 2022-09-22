@@ -12,7 +12,6 @@ export default function Navbar() {
     <Menu>
       <Menu.Item
         name='home'
-        active={router.pathname.includes('home')}
         onClick={() => { router.push('/') }}
       >
         <Icon name='home' />

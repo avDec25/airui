@@ -42,7 +42,7 @@ export function UserRequestFetcher() {
   const userEmail = session.data?.user?.email;
   const mutation = useMutation(requestDetails);
   const [userRequestsData, setUserRequestsData] = useState({ details: [] });
-  
+
   const [formData, setFormData] = useState({
     "requesterEmail": userEmail,
     "requesterTeamEmail": ""
@@ -68,68 +68,68 @@ export function UserRequestFetcher() {
   return (
     <React.Fragment>
 
-        <Form>
-          <Form.Group widths='equal'>
-            <Form.Input id="requesterEmail" fluid type='email' label='POC Email' placeholder='Point Of Contact Email' onChange={handleFormChange} />
-            <Form.Input id="requesterTeamEmail" fluid type='email' label='Team Email' placeholder='Team Email or Manager Email' onChange={handleFormChange} />
-          </Form.Group>
+      <Form>
+        <Form.Group widths='equal'>
+          <Form.Input id="requesterEmail" fluid type='email' label='POC Email' placeholder='Point Of Contact Email' onChange={handleFormChange} />
+          <Form.Input id="requesterTeamEmail" fluid type='email' label='Team Email' placeholder='Team Email or Manager Email' onChange={handleFormChange} />
+        </Form.Group>
 
-          <Form.Button onClick={validateAndSubmitRequest}>Search</Form.Button>
-        </Form>
+        <Form.Button onClick={validateAndSubmitRequest}>Search</Form.Button>
+      </Form>
 
-        {userRequestsData?.details.length > 0 &&
-          <Grid columns={3}>
-            <Grid.Row></Grid.Row>
-            <Grid.Row className={styles.headerRow}>
-              <Grid.Column width={3}>Creation</Grid.Column>
-              <Grid.Column width={7}>Response to User Request</Grid.Column>
-              <Grid.Column width={6}>Request Payload</Grid.Column>
-            </Grid.Row>
+      {userRequestsData?.details.length > 0 &&
+        <Grid columns={3}>
+          <Grid.Row></Grid.Row>
+          <Grid.Row className={styles.headerRow}>
+            <Grid.Column width={3}>Creation</Grid.Column>
+            <Grid.Column width={7}>Response to User Request</Grid.Column>
+            <Grid.Column width={6}>Request Payload</Grid.Column>
+          </Grid.Row>
 
-            {userRequestsData?.details?.map(
-              (detail) => {
-                let requestColor = 'grey';
-                if (detail.request_type == 'enable-topic-replication') {
-                  requestColor = 'blue';
-                } else if (detail.request_type == 'create-topic') {
-                  requestColor = 'teal';                  
-                } else if (detail.request_type == 'onboard-application') {
-                  requestColor = 'green';                  
-                } else if (detail.request_type == 'authorize-application') {
-                  requestColor = 'pink';
-                }
-
-                return (
-                  <>
-                    <Grid.Row>
-                      <Grid.Column width={3} className={styles.pre}>
-                        <Segment>
-                          <List>
-                            <List.Item>{detail.created_on}</List.Item>
-                            <List.Item>{detail.created_by.replaceAll("@myntra.com", "")}</List.Item>
-                            <List.Item><Label color={requestColor}>{detail.request_type}</Label></List.Item>
-                          </List>
-                        </Segment>
-                      </Grid.Column>
-
-                      <Grid.Column width={7}>
-                        <SyntaxHighlighter>
-                          {detail?.response?.responses[0] ? detail.response.responses[0] : "No Response Yet"}
-                        </SyntaxHighlighter>
-                      </Grid.Column>
-
-                      <Grid.Column width={6}>
-                        <SyntaxHighlighter language={"JSON"}>
-                          {JSON.stringify(detail.request_payload, null, 2)}
-                        </SyntaxHighlighter>
-                      </Grid.Column>
-                    </Grid.Row>
-                  </>
-                );
+          {userRequestsData?.details?.map(
+            (detail) => {
+              let requestColor = 'grey';
+              if (detail.request_type == 'enable-topic-replication') {
+                requestColor = 'blue';
+              } else if (detail.request_type == 'create-topic') {
+                requestColor = 'teal';
+              } else if (detail.request_type == 'onboard-application') {
+                requestColor = 'green';
+              } else if (detail.request_type == 'authorize-application') {
+                requestColor = 'pink';
               }
-            )}
 
-          </Grid>}
+              return (
+                <>
+                  <Grid.Row>
+                    <Grid.Column width={3} className={styles.pre}>
+                      <Segment>
+                        <List>
+                          <List.Item>{detail.created_on}</List.Item>
+                          <List.Item>{detail.created_by.replaceAll("@myntra.com", "")}</List.Item>
+                          <List.Item><Label color={requestColor}>{detail.request_type}</Label></List.Item>
+                        </List>
+                      </Segment>
+                    </Grid.Column>
+
+                    <Grid.Column width={7}>
+                      <SyntaxHighlighter>
+                        {detail?.response?.responses[0] ? detail.response.responses[0] : "No Response Yet"}
+                      </SyntaxHighlighter>
+                    </Grid.Column>
+
+                    <Grid.Column width={6}>
+                      <SyntaxHighlighter language={"JSON"}>
+                        {JSON.stringify(detail.request_payload, null, 2)}
+                      </SyntaxHighlighter>
+                    </Grid.Column>
+                  </Grid.Row>
+                </>
+              );
+            }
+          )}
+
+        </Grid>}
     </React.Fragment>
   )
 }
