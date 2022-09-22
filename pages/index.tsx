@@ -15,6 +15,7 @@ const Home: NextPage = () => {
       {session && 
       <main>
         <h1> Welcome {session.data?.user?.name} to AirUi </h1>
+        <h3> More Details at <a href='https://confluence.myntracorp.com/confluence/x/QcoeCw'>Airbus L1 Support</a> </h3>
       </main>}
     </>
   );

@@ -64,6 +64,15 @@ export default function Navbar() {
         Replication
       </Menu.Item>
 
+      <Menu.Item
+        name='RequestsDetails'
+        active={router.pathname.includes('info/RequestsDetails')}
+        onClick={() => { router.push('/info/RequestsDetails') }}
+      >
+        <Icon name='tasks' />
+        Requests Details
+      </Menu.Item>
+
       <Menu.Menu position='right'>
         <Menu.Item>
           {session ? (
