@@ -45,7 +45,6 @@ const saveKycUpdate = (formData: { [key: string]: string }) => {
 let selectedApp = '';
 let selectedEvent = '';
 
-
 export function UpdateDetails() {
   const session = useSession();
   const queryClient = useQueryClient();

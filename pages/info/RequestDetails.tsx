@@ -3,6 +3,8 @@ import Head from 'next/head';
 import { useSession } from "next-auth/react";
 import { Tab, Grid } from "semantic-ui-react";
 import { UserRequestFetcher } from "../../components/request-details/UserRequestFetcher";
+import { ProducerRequestHandler } from "../../components/request-details/ProducerRequestHandler";
+import { ConsumerRequestHandler } from "../../components/request-details/ConsumerRequestHandler";
 
 const RequestDetails: NextPage = () => {
   const session = useSession();
@@ -14,8 +16,8 @@ const RequestDetails: NextPage = () => {
   const panes = [
     {
       menuItem: {
-        key: "UsersRequest",
-        content: "User's Request",
+        key: "UserRequest",
+        content: "User Request",
       },
       render: () => (
         <Tab.Pane attached={false}>
@@ -23,6 +25,40 @@ const RequestDetails: NextPage = () => {
             <Grid.Row columns={1}>
               <Grid.Column>
                 <UserRequestFetcher />
+              </Grid.Column>
+            </Grid.Row>
+          </Grid>
+        </Tab.Pane>
+      ),
+    },
+    {
+      menuItem: {
+        key: "ProducerRequest",
+        content: "Producer Request",
+      },
+      render: () => (
+        <Tab.Pane attached={false}>
+          <Grid columns={1}>
+            <Grid.Row columns={1}>
+              <Grid.Column>
+                <ProducerRequestHandler />
+              </Grid.Column>
+            </Grid.Row>
+          </Grid>
+        </Tab.Pane>
+      ),
+    },
+    {
+      menuItem: {
+        key: "ConsumerRequest",
+        content: "Consumer Request",
+      },
+      render: () => (
+        <Tab.Pane attached={false}>
+          <Grid columns={1}>
+            <Grid.Row columns={1}>
+              <Grid.Column>
+                <ConsumerRequestHandler />
               </Grid.Column>
             </Grid.Row>
           </Grid>
