@@ -6,7 +6,7 @@ import { AuthorizeApp } from "../../components/secured/AuthorizeApp";
 import { OnBoardApplication } from "../../components/secured/OnBoardApplication";
 import { SecureTopic } from "../../components/secured/SecureTopic";
 
-const Secured: NextPage = () => {
+const SecuredPanel: NextPage = () => {
   const session = useSession();
 
   if (session.status != "authenticated") {
@@ -73,8 +73,8 @@ const Secured: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Register</title>
-        <meta name="description" content="Registeration of non-secured Application, Producer and Consumer" />
+        <title>Secured</title>
+        <meta name="description" content="Registeration of user principals, topics, and acl generation" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Tab menu={{ pointing: false }} panes={panes} />
@@ -82,4 +82,4 @@ const Secured: NextPage = () => {
   )
 }
 
-export default Secured
+export default SecuredPanel

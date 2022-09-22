@@ -49,10 +49,19 @@ export default function Navbar() {
       <Menu.Item
         name='Secured'
         active={router.pathname.includes('secured')}
-        onClick={() => { router.push('/secured/Secured') }}
+        onClick={() => { router.push('/secured/SecuredPanel') }}
       >
         <Icon name='shield' />
         Secured
+      </Menu.Item>
+
+      <Menu.Item
+        name='Replication'
+        active={router.pathname.includes('replication')}
+        onClick={() => { router.push('/replication/ReplicationPanel') }}
+      >
+        <Icon name='copy' />
+        Replication
       </Menu.Item>
 
       <Menu.Menu position='right'>

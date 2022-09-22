@@ -23,7 +23,7 @@ const Clusters: NextPage = () => {
   return (
     <React.Fragment>
       <Head>
-        <title>Cluster Page</title>
+        <title>Cluster</title>
         <meta name="description" content="Cluster Details" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
