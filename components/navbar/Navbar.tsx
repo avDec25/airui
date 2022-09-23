@@ -72,6 +72,15 @@ export default function Navbar() {
         Request Details
       </Menu.Item>
 
+      <Menu.Item
+        name='KafkaRuns'
+        active={router.pathname.includes('kafkaruns')}
+        onClick={() => { router.push('/kafkaruns/Partitions') }}
+      >
+        <Icon name='wrench' />
+        KafkaRuns
+      </Menu.Item>
+
       <Menu.Menu position='right'>
         <Menu.Item>
           {session ? (
