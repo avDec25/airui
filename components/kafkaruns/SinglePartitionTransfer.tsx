@@ -142,8 +142,8 @@ export function SinglePartitionTransfer() {
 
         {
           processSubmitted 
-          ? <Form.Button color='red' onClick={stopPartitionTransfer}>Stop</Form.Button> 
-          : <Form.Button color='green' onClick={validateAndSubmitRequest}>Submit</Form.Button>
+          ? <Form.Button negative onClick={stopPartitionTransfer}>Stop Transfer</Form.Button> 
+          : <Form.Button positive onClick={validateAndSubmitRequest}>Start Transfer</Form.Button>
         }
       </Form>
     </React.Fragment>
