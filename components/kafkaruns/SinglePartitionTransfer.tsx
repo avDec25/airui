@@ -1,5 +1,5 @@
 import React from 'react'
-import { Form } from 'semantic-ui-react'
+import { Form, Button } from 'semantic-ui-react'
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { useSession } from "next-auth/react";
@@ -9,7 +9,7 @@ import { useMutation } from 'react-query';
 const backend_service = process.env.NEXT_PUBLIC_KAFKARUN
 
 const transferPartition = (formData: { [key: string]: string }) => {
-  const promise = axios.post(`${backend_service}/partition/transfer`, formData)
+  const promise = axios.post(`${backend_service}/partition/transfer/start`, formData)
   toast.promise(
     promise,
     {
@@ -30,29 +30,45 @@ const transferPartition = (formData: { [key: string]: string }) => {
   return promise
 }
 
+const stopTransfer = () => {
+  const promise = axios.post(`${backend_service}/partition/transfer/stop`)
+  toast.promise(
+    promise,
+    {
+      pending: 'Stopping Partition Transfer...',
+      success: {
+        render({ data }) {
+          return data?.data.message
+        }
+      },
+      error: {
+        render({ data }) {
+          console.log(data);
+          return data?.response.data.message
+        }
+      }
+    }
+  );
+  return promise
+}
+
+let processSubmitted = false;
 
 export function SinglePartitionTransfer() {
   const session = useSession();
   const userEmail = session.data?.user?.email;
   const mutation = useMutation(transferPartition);
+  const stoptransfer = useMutation(stopTransfer);
 
   const [formData, setFormData] = useState({
     "consumeFromKafka": "",
     "produceToKafka": "",
-
     "consumeFromTopic": "",
     "produceToTopic": "",
-
     "consumeFromPartition": "0",
     "produceToPartition": "0",
-
     "consumerGroupId": "",
-    "consumeFromOffset": "0",
-
-    "pollTime": "1000",
-    "epoch": "3",
-
-    "groupInstanceId": "",
+    "commitBatch": 50,
     "requesterEmail": userEmail,
   });
 
@@ -88,7 +104,13 @@ export function SinglePartitionTransfer() {
       });
     } else {
       mutation.mutate(formData);
+      processSubmitted = true;
     }
+  }
+
+  const stopPartitionTransfer = () => {
+    stoptransfer.mutate();
+    processSubmitted = false;
   }
 
   return (
@@ -110,21 +132,19 @@ export function SinglePartitionTransfer() {
         </Form.Group>
 
         <Form.Group widths='equal'>
-          <Form.Input required fluid id="consumerGroupId" label='Consumer Group Id' placeholder='format: consumer-producer-event-consumer-group' onChange={handleFormChange} />
-          <Form.Input required fluid id="consumeFromOffset" type='number' min='0' defaultValue={'0'} label='Consume From Offset' placeholder='start consumption from offset of consumeFromPartition' onChange={handleFormChange} />
-        </Form.Group>
-
-        <Form.Group widths='equal'>
-          <Form.Input required fluid id="pollTime" type='number' min='100' max='10000' label='Consumer poll time' placeholder='poll duration in milliseconds' defaultValue={'1000'} onChange={handleFormChange} />
-          <Form.Input required fluid id="epoch" type='number' min='1' label='Epoch' defaultValue={'3'} placeholder='times this entire consume and produce cycle be repeated' onChange={handleFormChange} />
-        </Form.Group>
-
-        <Form.Group widths='equal'>
-          <Form.Input fluid id="groupInstanceId" label='Group Instance ID' placeholder={'leave it, if this is unknown to you'} onChange={handleFormChange} />
+          <Form.Input required fluid id="commitBatch" type='number' min='50' defaultValue={'50'} label='Batch Size' placeholder='unit: message count' onChange={handleFormChange} />
           <Form.Input fluid id="requesterEmail" label='Submitted By' value={userEmail} onChange={handleFormChange} />
         </Form.Group>
 
-        <Form.Button onClick={validateAndSubmitRequest}>Submit</Form.Button>
+        <Form.Group widths='equal'>
+          <Form.Input required fluid id="consumerGroupId" label='Consumer Group Id' placeholder='format: consumerApp-producerApp-eventName-consumer-group' onChange={handleFormChange} />
+        </Form.Group>
+
+        {
+          processSubmitted 
+          ? <Form.Button color='red' onClick={stopPartitionTransfer}>Stop</Form.Button> 
+          : <Form.Button color='green' onClick={validateAndSubmitRequest}>Submit</Form.Button>
+        }
       </Form>
     </React.Fragment>
   )

@@ -21,7 +21,7 @@ const Partitions: NextPage = () => {
         <Tab.Pane attached={false}>
           <Grid>
             <Grid.Row>
-              <Grid.Column width={10}>
+              <Grid.Column width={8}>
                 <SinglePartitionTransfer />
               </Grid.Column>
             </Grid.Row>
