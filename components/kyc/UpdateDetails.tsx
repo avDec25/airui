@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState } from "react";
-import { Statistic, Container, Form, Grid, Table, Popup } from 'semantic-ui-react'
+import { Statistic, Container, Form, Grid, Table, Popup, List } from 'semantic-ui-react'
 import { toast } from "react-toastify";
 import { useSession } from "next-auth/react";
 import { useQuery, useQueryClient, useMutation } from 'react-query';
@@ -96,10 +96,10 @@ export function UpdateDetails() {
   ]
 
   const optionsImportance = [
-    { key: "critical", text: "Critical", value: "critical" },
-    { key: "major", text: "Major", value: "major" },
-    { key: "minor", text: "Minor", value: "minor" },
-    { key: "trivial", text: "Trivial", value: "trivial" },
+    { key: "critical", text: "🔴 Critical", value: "critical" },
+    { key: "major", text: "🟠 Major", value: "major" },
+    { key: "minor", text: "🟡 Minor", value: "minor" },
+    { key: "trivial", text: "⚪ Trivial", value: "trivial" },
   ]
 
   const handleApplicationSelection = (event: object, item: any) => {
@@ -200,12 +200,21 @@ export function UpdateDetails() {
                 </Form.Group>
 
                 <Form.Group widths={'equal'}>
-                  <Form.Select
-                    id='importance'
-                    label='Importance'
-                    options={optionsImportance}
-                    onChange={handleFormChange}
-                  />
+                  <Popup trigger={
+                    <Form.Select
+                      id='importance'
+                      label='Importance'
+                      options={optionsImportance}
+                      onChange={handleFormChange}
+                    />
+                  }>
+                    <List>
+                      <List.Item><strong>🔴 Critical: </strong> Event failure will result in an immediate and irrecoverable Revenue loss</List.Item>
+                      <List.Item><strong>🟠 Major: </strong> Failure for long will eventually result in Revenue Loss</List.Item>
+                      <List.Item><strong>🟡 Minor: </strong> Failure will not result in a revenue loss, Kind of loss will be different</List.Item>
+                      <List.Item><strong>⚪ Trivial: </strong> Event deletion is acceptable</List.Item>
+                    </List>
+                  </Popup>
                   <Form.Input fluid id='lastUpdatedBy' label='Updater' value={userEmail} onChange={handleFormChange} />
                 </Form.Group>
 
@@ -261,7 +270,7 @@ export function UpdateDetails() {
                             case "critical": colored = 'red'; break;
                             case "major": colored = 'orange'; break;
                             case "minor": colored = 'yellow'; break;
-                            case "trivial": colored = 'olive'; break;
+                            case "trivial": colored = 'grey'; break;
                             default: colored = 'black';
                           }
                           return (
