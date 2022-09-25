@@ -1,10 +1,11 @@
 import React from 'react'
 import { useState } from "react";
-import { Container, Form, Grid, Table } from 'semantic-ui-react'
+import { Container, Form, Grid, Table, Popup } from 'semantic-ui-react'
 import { toast } from "react-toastify";
 import { useSession } from "next-auth/react";
 import { useQuery, useQueryClient, useMutation } from 'react-query';
 import axios from 'axios';
+import validator from 'validator';
 
 const backend_service = process.env.NEXT_PUBLIC_AIRBUS_SERVICE_SUPPORT
 
@@ -57,6 +58,8 @@ export function UpdateDetails() {
   const [formData, setFormData] = useState({
     "appName": "",
     "eventName": "",
+    "importance": "",
+    "description": "",
     "brdLoad": "",
     "bauLoad": "",
     "sdkLang": "",
@@ -92,6 +95,13 @@ export function UpdateDetails() {
     { key: "node", text: "Node", value: "node" },
   ]
 
+  const optionsImportance = [
+    { key: "critical", text: "Critical", value: "critical" },
+    { key: "major", text: "Major", value: "major" },
+    { key: "minor", text: "Minor", value: "minor" },
+    { key: "trivial", text: "Trivial", value: "trivial" },
+  ]
+
   const handleApplicationSelection = (event: object, item: any) => {
     selectedApp = item.value;
     queryClient.invalidateQueries('event-names');
@@ -112,6 +122,9 @@ export function UpdateDetails() {
 
 
   const validateAndSubmitRequest = (e: object, item: any) => {
+    console.log("======checking=======");
+    console.log(formData);
+
     var hasError = false;
     var message = "";
     for (const [key, value] of Object.entries(formData)) {
@@ -119,9 +132,15 @@ export function UpdateDetails() {
         hasError = true
         message = `Please fill ${key} before continuing`
       }
+      if (key == 'description') {
+        if (!validator.isAlphanumeric(value?.replaceAll(' ', ''))) {
+          hasError = true
+          message = 'Event Description only accepts letters and numbers.'
+        }
+      }
     }
     if (hasError) {
-      toast.error(`Found Empty field; ${message}`, {
+      toast.error(`Error: ${message}`, {
         position: "bottom-left",
         autoClose: false,
         hideProgressBar: false,
@@ -174,11 +193,29 @@ export function UpdateDetails() {
                   />
                   <Form.Input fluid id='sdkVersion' label='SDK version' onChange={handleFormChange} />
                 </Form.Group>
+
                 <Form.Group widths={'equal'}>
                   <Form.Input required fluid type='email' id='managerEmail' label='Manager Email' onChange={handleFormChange} />
                   <Form.Input fluid id='team' label='Team Name' placeholder='Enter team email if available' onChange={handleFormChange} />
+                </Form.Group>
+
+                <Form.Group widths={'equal'}>
+                  <Form.Select
+                    id='importance'
+                    label='Importance'
+                    options={optionsImportance}
+                    onChange={handleFormChange}
+                  />
                   <Form.Input fluid id='lastUpdatedBy' label='Updater' value={userEmail} onChange={handleFormChange} />
                 </Form.Group>
+
+                <Form.TextArea
+                  id='description'
+                  required={true}
+                  label='Event Description'
+                  placeholder='Describe what this event is used for OR inform what it carries'
+                  onChange={handleFormChange}
+                />
 
                 <Form.Button type='submit' onClick={validateAndSubmitRequest}>Submit</Form.Button>
               </Form>
@@ -202,9 +239,22 @@ export function UpdateDetails() {
                       <Table.Cell> {selectedApp} </Table.Cell>
                     </Table.Row>
 
+                    <Popup trigger={
+                      <Table.Row>
+                        <Table.Cell>Producer Event Name</Table.Cell>
+                        <Table.Cell>
+                          {selectedEvent}
+                        </Table.Cell>
+                      </Table.Row>
+                    } position='right center'>
+                      <Popup.Content>
+                        {currentDetails?.data.description}
+                      </Popup.Content>
+                    </Popup>
+
                     <Table.Row>
-                      <Table.Cell>Producer Event Name</Table.Cell>
-                      <Table.Cell> {selectedEvent} </Table.Cell>
+                      <Table.Cell>Importance</Table.Cell>
+                      <Table.Cell> {currentDetails?.data.importance} </Table.Cell>
                     </Table.Row>
 
                     <Table.Row>

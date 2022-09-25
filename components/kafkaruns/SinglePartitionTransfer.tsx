@@ -1,5 +1,5 @@
 import React from 'react'
-import { Form, Button } from 'semantic-ui-react'
+import { Form } from 'semantic-ui-react'
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { useSession } from "next-auth/react";

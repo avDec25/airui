@@ -1,7 +1,7 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import { useSession } from "next-auth/react";
-import { Tab, Grid } from "semantic-ui-react";
+import { Segment, Tab, Grid } from "semantic-ui-react";
 import { RequestReplication } from "../../components/replication/RequestReplication";
 import { ApproveReplication } from "../../components/replication/ApproveReplication";
 
@@ -9,7 +9,7 @@ const ReplicationPanel: NextPage = () => {
   const session = useSession();
 
   if (session.status != "authenticated") {
-    return (<div>Cannot continue for an arbitrary client, please sign in first</div>)
+    return (<Segment>Cannot continue for an arbitrary client, please sign in first</Segment>)
   }
 
   const panes = [

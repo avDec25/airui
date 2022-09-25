@@ -1,7 +1,7 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import { useSession } from "next-auth/react";
-import { Grid, Tab } from "semantic-ui-react";
+import { Grid, Tab, Segment } from "semantic-ui-react";
 import { AuthorizeApp } from "../../components/secured/AuthorizeApp";
 import { OnBoardApplication } from "../../components/secured/OnBoardApplication";
 import { SecureTopic } from "../../components/secured/SecureTopic";
@@ -10,7 +10,7 @@ const SecuredPanel: NextPage = () => {
   const session = useSession();
 
   if (session.status != "authenticated") {
-    return (<div>Cannot continue for an arbitrary client, please sign in first</div>)
+    return (<Segment>Cannot continue for an arbitrary client, please sign in first</Segment>)
   }
 
   const panes = [

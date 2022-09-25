@@ -41,7 +41,7 @@ function AirUi({ Component, pageProps: { session, ...pageProps } }: AppProps) {
               
             </Grid.Row>
           </Grid>
-          <ReactQueryDevtools initialIsOpen={false}/>
+          {/* <ReactQueryDevtools initialIsOpen={false}/> */}
         </QueryClientProvider>        
       </SessionProvider>
     </>

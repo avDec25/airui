@@ -1,14 +1,14 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import { useSession } from "next-auth/react";
-import { Grid, Tab } from "semantic-ui-react";
+import { Segment, Grid, Tab } from "semantic-ui-react";
 import  { SinglePartitionTransfer }  from "../../components/kafkaruns/SinglePartitionTransfer";
 
 const Partitions: NextPage = () => {
   const session = useSession();
 
   if (session.status != "authenticated") {
-    return (<div>Cannot continue for an arbitrary client, please sign in first</div>)
+    return (<Segment>Cannot continue for an arbitrary client, please sign in first</Segment>)
   }
 
   const panes = [

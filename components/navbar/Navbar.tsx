@@ -15,7 +15,7 @@ export default function Navbar() {
         onClick={() => { router.push('/') }}
       >
         <Icon name='home' />
-        Air UI
+        AirUi
       </Menu.Item>
 
       <Menu.Item

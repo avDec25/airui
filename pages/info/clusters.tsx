@@ -1,5 +1,6 @@
 import React from 'react'
-import { Grid, Table, Label, Button } from 'semantic-ui-react';
+import { useSession } from "next-auth/react";
+import { Grid, Table, Label, Button, Segment } from 'semantic-ui-react';
 import { useQuery } from 'react-query';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import axios from 'axios';
@@ -14,7 +15,13 @@ function getClusterDetails() {
 
 
 const Clusters: NextPage = () => {
+  const session = useSession();
   const clusterDetails = useQuery('clsuter-details', getClusterDetails);
+
+  if (session.status != "authenticated") {
+    return (<Segment>Cannot continue for an arbitrary client, please sign in first</Segment>)
+  }
+
   if (clusterDetails.isLoading) {
     return <>Loading Data...</>
   }
