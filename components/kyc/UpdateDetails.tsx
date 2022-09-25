@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState } from "react";
-import { Container, Form, Grid, Table, Popup } from 'semantic-ui-react'
+import { Statistic, Container, Form, Grid, Table, Popup } from 'semantic-ui-react'
 import { toast } from "react-toastify";
 import { useSession } from "next-auth/react";
 import { useQuery, useQueryClient, useMutation } from 'react-query';
@@ -254,7 +254,23 @@ export function UpdateDetails() {
 
                     <Table.Row>
                       <Table.Cell>Importance</Table.Cell>
-                      <Table.Cell> {currentDetails?.data.importance} </Table.Cell>
+                      <Table.Cell>
+                        {(() => {
+                          let colored = 'grey';
+                          switch (currentDetails?.data.importance) {
+                            case "critical": colored = 'red'; break;
+                            case "major": colored = 'orange'; break;
+                            case "minor": colored = 'yellow'; break;
+                            case "trivial": colored = 'olive'; break;
+                            default: colored = 'black';
+                          }
+                          return (
+                            <Statistic size='mini' color={colored}>
+                              <Statistic.Value>{currentDetails?.data.importance}</Statistic.Value>
+                            </Statistic>
+                          )
+                        })()}
+                      </Table.Cell>
                     </Table.Row>
 
                     <Table.Row>
