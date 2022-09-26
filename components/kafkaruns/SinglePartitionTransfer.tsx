@@ -73,7 +73,7 @@ export function SinglePartitionTransfer() {
       console.log('Connected: ' + frame);
       stompClient.subscribe('/topic/greetings', (frame: IMessage) => {
         let message = frame.body;
-        console.log(message); 
+        console.log(message);
 
         messages.unshift(message);
         setMessages(message);
@@ -185,8 +185,6 @@ export function SinglePartitionTransfer() {
           </Grid.Column>
         </Grid.Row>
       </Grid>
-
-      <Button onClick={sendMessage}>Send</Button>
     </React.Fragment>
   )
 }

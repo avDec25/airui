@@ -1,0 +1,6 @@
+.latest :first-child :nth-child(1){
+  background-color: #B2FFB6;
+}
+.latest :first-child :nth-child(2){
+  background-color: #B2FFB6;
+}

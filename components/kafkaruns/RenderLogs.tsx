@@ -1,6 +1,7 @@
 import React from 'react'
-import { Grid, Table } from 'semantic-ui-react'
+import { Table } from 'semantic-ui-react'
 import { useEffect, useState } from "react";
+import styles from "../../styles/RenderLogs.module.css";
 
 export default function SinglePartitionTransfer({ data }) {
   const [logs, setLogs] = useState(data);
@@ -14,7 +15,7 @@ export default function SinglePartitionTransfer({ data }) {
           <Table.HeaderCell colSpan='2'>Process Logs</Table.HeaderCell>
         </Table.Row>
       </Table.Header>
-      <Table.Body>
+      <Table.Body className={styles.latest}>
         {logs.map((item: string, i: number) => {
           let json = JSON.parse(item);
           return (
