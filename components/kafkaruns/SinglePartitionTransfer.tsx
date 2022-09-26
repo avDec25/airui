@@ -87,10 +87,6 @@ export function SinglePartitionTransfer() {
     };
   }, []);
 
-  const sendMessage = () => {
-    stompClient.send("/spring/hello", {}, JSON.stringify({ 'name': 5 }));
-  }
-
   const [formData, setFormData] = useState({
     "consumeFromKafka": "",
     "produceToKafka": "",
