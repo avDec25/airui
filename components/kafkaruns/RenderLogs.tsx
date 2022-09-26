@@ -20,7 +20,7 @@ export default function SinglePartitionTransfer({ data }) {
           let json = JSON.parse(item);
           return (
             <Table.Row key={i}>
-              <Table.Cell width={5}>{json.timestamp}</Table.Cell>
+              <Table.Cell width={6}>{json.timestamp}</Table.Cell>
               <Table.Cell>{json.message}</Table.Cell>
             </Table.Row>
           );

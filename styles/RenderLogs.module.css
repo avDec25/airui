@@ -1,6 +1,8 @@
 .latest :first-child :nth-child(1){
-  background-color: #B2FFB6;
+  color: #2c662d!important;
+  background: #f5ffe0!important;
 }
 .latest :first-child :nth-child(2){
-  background-color: #B2FFB6;
+  color: #2c662d!important;
+  background: #f5ffe0!important;
 }

@@ -71,7 +71,7 @@ export function SinglePartitionTransfer() {
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function (frame: string) {
       console.log('Connected: ' + frame);
-      stompClient.subscribe('/topic/greetings', (frame: IMessage) => {
+      stompClient.subscribe('/topic/partition-transfer', (frame: IMessage) => {
         let message = frame.body;
         console.log(message);
 
@@ -95,7 +95,7 @@ export function SinglePartitionTransfer() {
     "consumeFromPartition": "0",
     "produceToPartition": "0",
     "consumerGroupId": "",
-    "commitBatch": 50,
+    "commitBatch": 500,
     "requesterEmail": userEmail,
   });
 
@@ -162,7 +162,7 @@ export function SinglePartitionTransfer() {
               </Form.Group>
 
               <Form.Group widths='equal'>
-                <Form.Input required fluid id="commitBatch" type='number' min='50' defaultValue={'50'} label='Batch Size' placeholder='unit: message count' onChange={handleFormChange} />
+                <Form.Input required fluid id="commitBatch" type='number' min='100' defaultValue={'500'} label='Batch Size' placeholder='unit: message count' onChange={handleFormChange} />
                 <Form.Input fluid id="requesterEmail" label='Submitted By' value={userEmail} onChange={handleFormChange} />
               </Form.Group>
 
