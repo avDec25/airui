@@ -1,12 +1,10 @@
 import React from 'react'
 import { Table } from 'semantic-ui-react'
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import styles from "../../styles/RenderLogs.module.css";
 
 export default function SinglePartitionTransfer({ data }) {
   const [logs, setLogs] = useState(data);
-  useEffect((): any => {
-  }, [data]);
 
   return (
     <Table celled selectable>
@@ -20,7 +18,7 @@ export default function SinglePartitionTransfer({ data }) {
           let json = JSON.parse(item);
           return (
             <Table.Row key={i}>
-              <Table.Cell width={6}>{json.timestamp}</Table.Cell>
+              <Table.Cell width={5}>{json.timestamp}</Table.Cell>
               <Table.Cell>{json.message}</Table.Cell>
             </Table.Row>
           );
