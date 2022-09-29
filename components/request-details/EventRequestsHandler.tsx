@@ -67,6 +67,11 @@ export function EventRequestsHandler() {
     setSelectedConsumingApp('');
   }, [selectedProducerApp, selectedEvent])
 
+  useEffect(() => {
+    setconsumerGroupId(`${selectedDC}-${selectedConsumingApp}-${selectedProducerApp}-${selectedEvent}-consumer-group`);
+  }, [selectedDC, selectedProducerApp, selectedEvent, selectedConsumingApp])
+  
+
 
 
   const handleDcChange = (event: object, item: any) => {
@@ -83,11 +88,6 @@ export function EventRequestsHandler() {
 
   const handleConsumingApplicationSelection = (event: object, item: any) => {
     setSelectedConsumingApp(item.value);
-    if (selectedDC.length > 0 &&
-      selectedProducerApp.length > 0 &&
-      selectedEvent.length > 0) {
-      setconsumerGroupId(`${selectedDC}-${selectedConsumingApp}-${selectedProducerApp}-${selectedEvent}-consumer-group`);
-    }
   }
 
 
@@ -101,8 +101,7 @@ export function EventRequestsHandler() {
     {
       menuItem: 'Consumer Group Describe',
       render: () => <Tab.Pane attached={false}>
-        {selectedDC.length > 0 && selectedConsumingApp.length > 0 && selectedProducerApp.length > 0 &&
-          selectedEvent.length > 0 && <ConsumerGroupDescriber groupId={consumerGroupId} />}
+        { consumerGroupId.length > 0 && <ConsumerGroupDescriber groupId={consumerGroupId} />}
       </Tab.Pane>,
     },
   ];
