@@ -1,0 +1,8 @@
+.latest :first-child :nth-child(1){
+  color: #2c662d!important;
+  background: #f5ffe0!important;
+}
+.latest :first-child :nth-child(2){
+  color: #2c662d!important;
+  background: #f5ffe0!important;
+}

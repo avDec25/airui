@@ -60,6 +60,7 @@ export function UpdateDetails() {
     "eventName": "",
     "importance": "",
     "description": "",
+    "primaryDC": "",
     "brdLoad": "",
     "bauLoad": "",
     "sdkLang": "",
@@ -100,6 +101,11 @@ export function UpdateDetails() {
     { key: "major", text: "🟠 Major", value: "major" },
     { key: "minor", text: "🟡 Minor", value: "minor" },
     { key: "trivial", text: "⚪ Trivial", value: "trivial" },
+  ]
+
+  const optionsDC = [
+    { key: "pune", text: "Pune (dc1)", value: "pune" },
+    { key: "chennai", text: "Chennai (dc2)", value: "chennai" },
   ]
 
   const handleApplicationSelection = (event: object, item: any) => {
@@ -215,7 +221,13 @@ export function UpdateDetails() {
                       <List.Item><strong>⚪ Trivial: </strong> Event deletion is acceptable</List.Item>
                     </List>
                   </Popup>
-                  <Form.Input fluid id='lastUpdatedBy' label='Updater' value={userEmail} onChange={handleFormChange} />
+
+                  <Form.Select
+                    id='primaryDC'
+                    label='Primary Data Center'
+                    options={optionsDC}
+                    onChange={handleFormChange}
+                  />
                 </Form.Group>
 
                 <Form.TextArea
@@ -225,6 +237,7 @@ export function UpdateDetails() {
                   placeholder='Describe what this event is used for OR inform what it carries'
                   onChange={handleFormChange}
                 />
+                <Form.Input fluid id='lastUpdatedBy' label='Updater' value={userEmail} onChange={handleFormChange} />
 
                 <Form.Button type='submit' onClick={validateAndSubmitRequest}>Submit</Form.Button>
               </Form>
@@ -280,6 +293,11 @@ export function UpdateDetails() {
                           )
                         })()}
                       </Table.Cell>
+                    </Table.Row>
+
+                    <Table.Row>
+                      <Table.Cell>Primary DC</Table.Cell>
+                      <Table.Cell> {currentDetails?.data.primaryDC} </Table.Cell>
                     </Table.Row>
 
                     <Table.Row>

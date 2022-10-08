@@ -3,8 +3,7 @@ import Head from 'next/head';
 import { useSession } from "next-auth/react";
 import { Segment, Tab, Grid } from "semantic-ui-react";
 import { UserRequestFetcher } from "../../components/request-details/UserRequestFetcher";
-import { ProducerRequestHandler } from "../../components/request-details/ProducerRequestHandler";
-import { ConsumerRequestHandler } from "../../components/request-details/ConsumerRequestHandler";
+import { EventRequestsHandler } from "../../components/request-details/EventRequestsHandler";
 
 const RequestDetails: NextPage = () => {
   const session = useSession();
@@ -33,32 +32,15 @@ const RequestDetails: NextPage = () => {
     },
     {
       menuItem: {
-        key: "ProducerRequest",
-        content: "Producer Request",
+        key: "EventRequest",
+        content: "Event Request",
       },
       render: () => (
         <Tab.Pane attached={false}>
           <Grid columns={1}>
             <Grid.Row columns={1}>
               <Grid.Column>
-                <ProducerRequestHandler />
-              </Grid.Column>
-            </Grid.Row>
-          </Grid>
-        </Tab.Pane>
-      ),
-    },
-    {
-      menuItem: {
-        key: "ConsumerRequest",
-        content: "Consumer Request",
-      },
-      render: () => (
-        <Tab.Pane attached={false}>
-          <Grid columns={1}>
-            <Grid.Row columns={1}>
-              <Grid.Column>
-                <ConsumerRequestHandler />
+                <EventRequestsHandler />
               </Grid.Column>
             </Grid.Row>
           </Grid>

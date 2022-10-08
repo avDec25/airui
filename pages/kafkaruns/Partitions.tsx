@@ -1,8 +1,8 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import { useSession } from "next-auth/react";
-import { Segment, Grid, Tab } from "semantic-ui-react";
-import  { SinglePartitionTransfer }  from "../../components/kafkaruns/SinglePartitionTransfer";
+import { Segment, Tab } from "semantic-ui-react";
+import { SinglePartitionTransfer } from "../../components/kafkaruns/SinglePartitionTransfer";
 
 const Partitions: NextPage = () => {
   const session = useSession();
@@ -19,13 +19,7 @@ const Partitions: NextPage = () => {
       },
       render: () => (
         <Tab.Pane attached={false}>
-          <Grid>
-            <Grid.Row>
-              <Grid.Column width={8}>
-                <SinglePartitionTransfer />
-              </Grid.Column>
-            </Grid.Row>
-          </Grid>
+          <SinglePartitionTransfer />
         </Tab.Pane>
       ),
     },

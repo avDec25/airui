@@ -1,0 +1,8 @@
+.bordered {
+  border: 1px solid black;
+}
+
+.bottomLine {
+  border: 1px solid gray;
+  float: inline-end;
+}
