@@ -1,34 +1,90 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## AirUi: Airbus System Management Interface
 
-## Getting Started
+AirUi is a robust interface designed to assist clients in efficiently performing
+both fundamental and advanced operations related to Airbus' Kafka management
+system. The platform is built to enhance system observability, security, and
+scalability, enabling seamless management of clusters and topics.
 
-First, run the development server:
+### Key Features:
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+<hr/>
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+#### Clusters Dashboard
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+The Clusters dashboard offers a comprehensive overview of all clusters, enabling
+users to monitor their health and access critical information at a glance. This
+functionality serves as a centralized hub for quick assessments of cluster
+status and performance metrics.
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+<hr/>
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+#### Know Your Consumer (KYC)
 
-## Learn More
+The KYC module provides in-depth insights into Kafka topics, including:
 
-To learn more about Next.js, take a look at the following resources:
+- Ownership details (e.g., the responsible team)
+- Usage context and associated applications
+- Technical associations with clusters
+- Details on producers, consumers, and consumer groups linked to each topic
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+This feature ensures better governance and understanding of data flows across
+the organization.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+<hr/>
 
-## Deploy on Vercel
+#### Registration
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+The Registration module facilitates the registration of both applications and
+topics, ensuring efficient onboarding and integration with the Kafka ecosystem.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+<hr/>
+
+#### Secured Topics Management
+
+The Secured Topics functionality is tailored for handling Personally
+Identifiable Information (PII). It enables:
+
+- Secure onboarding of sensitive topics
+- Configuration of security policies and permissions
+- Incremental authorization for access by other applications
+
+This feature ensures compliance with privacy regulations and enhances data
+protection.
+
+![SecuredKafka](docs/secured_kafka.png)
+
+<hr/>
+
+#### Topic Replication
+
+The Replication functionality allows clients to configure topic replication
+strategies using available resources, such as threads and servers. It offers
+flexibility in terms of:
+
+- Aggressiveness of replication
+- Selection of data centers for replication
+- Support for both cross-data center and intra-data center replication
+
+This capability ensures data redundancy, high availability, and disaster
+recovery.
+
+![Replication](docs/replication.png)
+
+<hr/>
+
+#### Request Status and Tracking
+
+The Request Details feature provides users with real-time status updates on
+submitted requests. It includes detailed logs of responses and the processing
+lifecycle, helping to streamline request management.
+
+<hr/>
+
+#### Kafka Operations Execution (KafkaRuns)
+
+The KafkaRuns module allows users to perform operations such as consuming a
+topic from one cluster and producing it to another. This functionality supports
+real-time visibility of operation logs through web sockets, ensuring
+transparency and traceability of data flows.
+
+![KafkaRuns](docs/kafka_runs.png)
